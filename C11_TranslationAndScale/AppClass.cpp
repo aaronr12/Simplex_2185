@@ -1,10 +1,14 @@
 #include "AppClass.h"
 void Application::InitVariables(void)
 {
-	//init the mesh
+	//init list of meshes
+	/*for (int i = 0; i < 46; i++)
+	{
+		
+	}*/
 	m_pMesh = new MyMesh();
-	//m_pMesh->GenerateCube(1.0f, C_WHITE);
-	m_pMesh->GenerateSphere(1.0f, 5, C_WHITE);
+	m_pMesh->GenerateCube(1.0f, C_BLACK); 
+	//m_pMesh->GenerateSphere(1.0f, 5, C_WHITE);
 }
 void Application::Update(void)
 {

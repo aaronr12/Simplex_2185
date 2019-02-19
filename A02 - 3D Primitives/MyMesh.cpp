@@ -276,7 +276,21 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	float fRadians = glm::radians(360.0f / static_cast<float>(a_nSubdivisions));
+
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddTri(vector3(0.0f, 0.0f, 0.0f) * a_fRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fRadius
+		);
+		AddTri(vector3(0.0f, 0.0f, a_fHeight) * a_fRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fRadius
+		);
+	}
+
 	// -------------------------------
 
 	// Adding information about color
@@ -300,7 +314,38 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fRadius * 2.0f, a_v3Color);
+
+	float fRadians = glm::radians(360.0f / static_cast<float>(a_nSubdivisions));
+
+	// base circle
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddTri(vector3(0.0f, 0.0f, 0.0f),
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fRadius
+		);
+	}
+
+	// top circle
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddTri(vector3(0.0f,0.0f,a_fHeight) * a_fRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), a_fHeight) * a_fRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), a_fHeight) * a_fRadius
+		);
+	}
+
+	// sides
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddQuad(vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), a_fHeight) * a_fRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), a_fHeight) * a_fRadius
+		);
+	}
+
 	// -------------------------------
 
 	// Adding information about color
@@ -330,7 +375,53 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	float fRadians = glm::radians(360.0f / static_cast<float>(a_nSubdivisions));
+	
+	// top
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddQuad(
+			vector3(cos(fRadians * i), sin(fRadians * i), a_fHeight) * a_fOuterRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), a_fHeight) * a_fOuterRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), a_fHeight) * a_fInnerRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), a_fHeight) * a_fInnerRadius
+		);
+	}
+
+	// bottom
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddQuad(
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fOuterRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fOuterRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fInnerRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fInnerRadius
+		);
+	}
+
+	// outer side
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddQuad(
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fOuterRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fOuterRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), a_fHeight) * a_fOuterRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), a_fHeight) * a_fOuterRadius
+		);
+	}
+
+	// inner side
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddQuad(
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fInnerRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fInnerRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), a_fHeight) * a_fInnerRadius,
+			vector3(cos(fRadians * i), sin(fRadians * i), a_fHeight) * a_fInnerRadius
+		);
+	}
+
 	// -------------------------------
 
 	// Adding information about color
@@ -362,7 +453,26 @@ void MyMesh::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSu
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+
+	float fRadiansA = glm::radians(360.0f / static_cast<float>(a_nSubdivisionsA));
+
+	// radius of ring
+	float ringRadius = (a_fOuterRadius - a_fInnerRadius) / 2;
+
+	// create circles and rotate them to surround the center
+	// connect circles with quads as in cylinder
+	for (int i = 0; i < a_nSubdivisionsA; i++)
+	{
+		for (int j = 0; j < a_nSubdivisionsB; j++)
+		{
+			AddTri(vector3(0.0f, 0.0f, 0.0f),
+				vector3(cos(fRadiansA * j), sin(fRadiansA * j), 0.0f) * ringRadius,
+				vector3(cos(fRadiansA * (j + 1)), sin(fRadiansA * (j + 1)), 0.0f) * ringRadius
+			);
+		}
+	}
+
 	// -------------------------------
 
 	// Adding information about color
@@ -387,7 +497,21 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	//GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	float fRadians = glm::radians(360.0f / static_cast<float>(a_nSubdivisions));
+
+	// need to make circles with the a_fRadius then connect the ends with quads
+	// create circles then rotate number of times equal to subdivisions
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		AddTri(vector3(0.0f, 0.0f, 0.0f),
+			vector3(cos(fRadians * i), sin(fRadians * i), 0.0f) * a_fRadius,
+			vector3(cos(fRadians * (i + 1)), sin(fRadians * (i + 1)), 0.0f) * a_fRadius
+		);
+
+		
+	}
+
 	// -------------------------------
 
 	// Adding information about color

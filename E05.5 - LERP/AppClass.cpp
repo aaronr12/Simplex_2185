@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	//Change this to your name and email
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Aaron Reiner - ajr8498@rit.edu";
 
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUpward(vector3(5.0f,3.0f,15.0f), ZERO_V3, AXIS_Y);
@@ -62,7 +62,12 @@ void Application::Display(void)
 	v3CurrentPos = vector3(0.0f, 0.0f, 0.0f);
 	//-------------------
 	
-
+	for (int i = 0; i < m_stopsList.size(); i++)
+	{
+		vector3 v3TempPos = m_stopsList[i];
+		glm::lerp(v3CurrentPos, v3TempPos, vector3(1.0f, 1.0f, 1.0f));
+		v3CurrentPos = v3TempPos;
+	}
 
 	
 	matrix4 m4Model = glm::translate(v3CurrentPos);

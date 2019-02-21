@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	//Change this to your name and email
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Aaron Reiner - ajr8498@rit.edu";
 	
 	//Set the position and target of the camera
 	//(I'm at [0,0,10], looking at [0,0,0] and up is the positive Y axis)
@@ -63,6 +63,11 @@ void Application::Display(void)
 		The following offset will orient the orbits as in the demo, start without it to make your life easier.
 	*/
 	//m4Offset = glm::rotate(IDENTITY_M4, 1.5708f, AXIS_Z);
+
+
+	static float fTimer = 0;
+	static uint uClock = m_pSystem->GenClock();
+	fTimer += m_pSystem->GetDeltaTime(uClock);
 
 	// draw a shapes
 	for (uint i = 0; i < m_uOrbits; ++i)

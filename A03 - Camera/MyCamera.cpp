@@ -156,13 +156,29 @@ void MyCamera::MoveForward(float a_fDistance)
 	
 	m_v3Position += vector3(0.0f, 0.0f,-a_fDistance);
 	m_v3Target += vector3(0.0f, 0.0f, -a_fDistance);
-	m_v3Above += vector3(0.0f, 0.0f, -a_fDistance);
-	
+	m_v3Above += vector3(0.0f, 0.0f, -a_fDistance);	
 }
 
-void MyCamera::MoveVertical(float a_fDistance){}//Needs to be defined
+void MyCamera::MoveHorizontal(float a_fDistance)
+{
+	quaternion Quat = glm::angleAxis(glm::radians(a_fDistance), m_v3Above - m_v3Position);
+	m_v3Above = Quat * (m_v3Above - m_v3Position) + m_v3Position;
+	m_v3Target = Quat * (m_v3Target - m_v3Position) + m_v3Position;
+	m_v3Forward = glm::normalize(m_v3Position - m_v3Target);
+	m_v3Right = glm::cross(m_v3Above - m_v3Position, m_v3Forward);
+}
+
+void MyCamera::MoveVertical(float a_fDistance)
+{
+	quaternion Quat = glm::angleAxis(glm::radians(a_fDistance), m_v3Right);
+	m_v3Above = Quat * (m_v3Above - m_v3Position) + m_v3Position;
+	m_v3Target = Quat * (m_v3Target - m_v3Position) + m_v3Position;
+	m_v3Forward = glm::normalize(m_v3Position - m_v3Target);
+	m_v3Right = glm::cross(m_v3Above - m_v3Position, m_v3Forward);
+}
 void MyCamera::MoveSideways(float a_fDistance)
 {
+	// moves sideways without taking view vector into account
 	m_v3Position += vector3(a_fDistance, 0.0f, 0.0f);
 	m_v3Target += vector3(a_fDistance, 0.0f, 0.0f);
 	m_v3Above += vector3(a_fDistance, 0.0f, 0.0f);

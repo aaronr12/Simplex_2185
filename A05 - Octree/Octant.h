@@ -13,6 +13,7 @@ namespace Simplex
 		float halfwidth;
 		float size;
 		int children = 0;
+		const int maxChildren = 8;
 
 		MeshManager* m_pMeshMngr = nullptr;
 		MyEntityManager* m_pEntityMngr = nullptr;
